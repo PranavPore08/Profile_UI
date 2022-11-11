@@ -272,8 +272,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ]),
                   ),
                   Container(
-                      padding: EdgeInsets.only(top: 30),
-                      child: GestureDetector(
+                    padding: EdgeInsets.only(top: 30),
+                    child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => const AddEducation()));
@@ -327,7 +327,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const EditCollege()));
+                                builder: (_) => const EditEducation()));
                           },
                           child: const Icon(Icons.edit_outlined, size: 22)),
                       const SizedBox(width: 25),

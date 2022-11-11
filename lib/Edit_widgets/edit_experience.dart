@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import '../widget/button.dart';
-import '../widget/input_field.dart';
 
-class EditExperience extends StatelessWidget {
+class EditExperience extends StatefulWidget {
   const EditExperience({Key key}) : super(key: key);
+  _EditExperience createState() => _EditExperience();
+}
+
+class _EditExperience extends State<EditExperience> {
+  final cmp_name = TextEditingController();
+  final cmp_position = TextEditingController();
+  final cmp_description = TextEditingController();
+  final cmp_start_date = TextEditingController();
+  final cmp_end_date = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 75,
-        title: const Text("Edit Experience Details",
+        title: const Text("Edit Experience",
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600)),
       ),
       body: CustomScrollView(
@@ -22,44 +30,53 @@ class EditExperience extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                    const InputField(
-                    placeholderText: "Company Name",
-                    initialValue:
-                        "Comapny Name",
+                  TextField(
+                    controller: cmp_name,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "Company Name",
+                      hintText: 'Enter Company Name',
                     ),
-                    const SizedBox(height: 15),
-
-                  const InputField(
-                    placeholderText: "Position/Role",
-                    initialValue:
-                        "Position Name",
                   ),
                   const SizedBox(height: 15),
-                 
-                 const InputField(
-                    placeholderText: "Description",
-                    initialValue:
-                        "Description",
+                  TextField(
+                    controller: cmp_position,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "Position/Role",
+                      hintText: 'Enter Your Role',
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextField(
+                    controller: cmp_description,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "Company Description",
+                      hintText: 'Enter Description',
+                    ),
                   ),
                   const SizedBox(height: 20),
-
-                  const InputField(
-                    placeholderText: "Start Date",
-                    initialValue:
-                        "MM-YEAR",
+                  TextField(
+                    controller: cmp_start_date,
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: "Start Date",
+                      hintText: 'Start Date',
+                    ),
                   ),
                   const SizedBox(height: 15),
-
-                  const InputField(
-                    placeholderText: "End Date",
-                    initialValue:
-                        "MM-YEAR",
+                  TextField(
+                    controller: cmp_end_date,
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: "End Date",
+                      hintText: 'End Date',
+                    ),
                   ),
-                  
                   const SizedBox(height: 15),
                   Button(
-                    text: "Update Experience",
+                    text: "Edit Experience",
                     onPressed: () {
                       Navigator.pop(context);
                     },

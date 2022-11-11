@@ -11,7 +11,8 @@ class InputField extends StatelessWidget {
       this.initialValue = "",
       this.placeholderText = "",
       this.minLines = 1,
-      this.maxLines = 1})
+      this.maxLines = 1,
+      TextEditingController controller})
       : super(key: key);
 
   @override
@@ -19,9 +20,7 @@ class InputField extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
       decoration: BoxDecoration(
-          color: Colors.blueGrey,
-
-          borderRadius: BorderRadius.circular(15)),
+          color: Colors.blueGrey, borderRadius: BorderRadius.circular(15)),
       child: TextFormField(
         initialValue: initialValue,
         minLines: minLines,

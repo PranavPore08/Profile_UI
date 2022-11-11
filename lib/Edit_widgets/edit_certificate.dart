@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import '../widget/button.dart';
-import '../widget/input_field.dart';
 
-class EditCertificate extends StatelessWidget {
+class EditCertificate extends StatefulWidget {
   const EditCertificate({Key key}) : super(key: key);
+  _EditCertificate createState() => _EditCertificate();
+}
+
+class _EditCertificate extends State<EditCertificate> {
+  final cer_name = TextEditingController();
+  final cer_organization = TextEditingController();
+  final cer_date = TextEditingController();
+  //late DatabaseReference dbref;
+
+  void initState() {
+    super.initState();
+    //dbref=FirebaseDatabase.instance.ref().child('Certificates');
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 75,
-        title: const Text("Edit Certificate Details",
+        title: const Text("Edit Certificate",
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600)),
       ),
       body: CustomScrollView(
@@ -22,29 +34,35 @@ class EditCertificate extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const InputField(
-                    placeholderText: "Certificate Name",
-                    initialValue:
-                        "Name",
+                  TextField(
+                    controller: cer_name,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "Certificate Name",
+                      hintText: 'Enter Certificate Name',
+                    ),
                   ),
                   const SizedBox(height: 15),
-                 
-                  const InputField(
-                    placeholderText: "Organization Details",
-                    initialValue:
-                        "Organization",
+                  TextField(
+                    controller: cer_name,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "Organization Name",
+                      hintText: 'Name',
+                    ),
                   ),
                   const SizedBox(height: 15),
-
-                  const InputField(
-                    placeholderText: "Date",
-                    initialValue:
-                        "DD-MM-YEAR",
+                  TextField(
+                    controller: cer_name,
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: "Certificate Date",
+                      hintText: 'Date',
+                    ),
                   ),
-                  
                   const SizedBox(height: 15),
                   Button(
-                    text: "Update Certificate",
+                    text: "Edit Certificate",
                     onPressed: () {
                       Navigator.pop(context);
                     },

@@ -1,9 +1,27 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../widget/button.dart';
-import '../widget/input_field.dart';
 
-class AddCertificate extends StatelessWidget {
+class AddCertificate extends StatefulWidget {
   const AddCertificate({Key key}) : super(key: key);
+  _AddCertificate createState() => _AddCertificate();
+}
+
+class _AddCertificate extends State<AddCertificate> {
+  final cer_name = TextEditingController();
+  final cer_organization = TextEditingController();
+  final cer_date = TextEditingController();
+
+  DatabaseReference dbRef;
+  CollectionReference db;
+
+  @override
+  void initState() {
+    super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('Students/Certificaion');
+    db = FirebaseFirestore.instance.collection('Students');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +40,54 @@ class AddCertificate extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const InputField(
-                    placeholderText: "Certificate Name",
-                    initialValue:
-                        "Name",
+                  TextField(
+                    controller: cer_name,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "Certificate Name",
+                      hintText: 'Enter Certificate Name',
+                    ),
                   ),
                   const SizedBox(height: 15),
-                 
-                  const InputField(
-                    placeholderText: "Organization Details",
-                    initialValue:
-                        "Organization",
+                  TextField(
+                    controller: cer_organization,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "Organization Name",
+                      hintText: 'Name',
+                    ),
                   ),
                   const SizedBox(height: 15),
-
-                  const InputField(
-                    placeholderText: "Date",
-                    initialValue:
-                        "DD-MM-YEAR",
+                  TextField(
+                    controller: cer_date,
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: "Certificate Date",
+                      hintText: 'Date',
+                    ),
                   ),
-                  
                   const SizedBox(height: 15),
                   Button(
                     text: "Add Certificate",
                     onPressed: () {
-                      Navigator.pop(context);
+                      return db
+                          .add({
+                            'cer_name': cer_name.text,
+                            'cer_organization': cer_organization.text,
+                            'cer_issue_date': cer_date.text
+                          })
+                          .then((value) => print("User Added"))
+                          .catchError(
+                              (error) => print("Failed to add user: $error"));
+
+                /*        Map<String, String> education = {
+                        'cer_name': cer_name.text,
+                        'cer_organization': cer_organization.text,
+                        'cer_issue_date': cer_date.text
+                      };
+
+                      dbRef.push().set(education);
+                      Navigator.pop(context);*/
                     },
                   ),
                 ],

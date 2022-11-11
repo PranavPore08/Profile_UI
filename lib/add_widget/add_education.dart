@@ -1,9 +1,25 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../widget/button.dart';
-import '../widget/input_field.dart';
 
-class AddEducation extends StatelessWidget {
+class AddEducation extends StatefulWidget {
   const AddEducation({Key key}) : super(key: key);
+  _AddEducation createState() => _AddEducation();
+}
+
+class _AddEducation extends State<AddEducation> {
+  final clg_name = TextEditingController();
+  final clg_branch = TextEditingController();
+  final clg_start_date = TextEditingController();
+  final clg_end_date = TextEditingController();
+
+  DatabaseReference dbRef;
+
+  @override
+  void initState() {
+    super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('Students/Education');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,36 +38,53 @@ class AddEducation extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const InputField(
-                    placeholderText: "College Name",
-                    initialValue:
-                        "Name",
+                  TextField(
+                    controller: clg_name,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "College Name",
+                      hintText: 'Name',
+                    ),
                   ),
                   const SizedBox(height: 15),
-                 
-                  const InputField(
-                    placeholderText: "Branch Details",
-                    initialValue:
-                        "Branch",
+                  TextField(
+                    controller: clg_branch,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: "Branch Name",
+                      hintText: 'Enter Branch Name',
+                    ),
                   ),
                   const SizedBox(height: 15),
-
-                  const InputField(
-                    placeholderText: "Start Date",
-                    initialValue:
-                        "MM-YEAR",
+                  TextField(
+                    controller: clg_start_date,
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: "Start Date",
+                      hintText: 'mm/yyyy',
+                    ),
                   ),
                   const SizedBox(height: 15),
-                  const InputField(
-                    placeholderText: "End Date",
-                    initialValue:
-                        "MM-YEAR",
+                  TextField(
+                    controller: clg_end_date,
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: "End Date",
+                      hintText: 'mm/yyyy',
+                    ),
                   ),
-                  
                   const SizedBox(height: 15),
                   Button(
                     text: "Add Education",
                     onPressed: () {
+                      Map<String, String> education = {
+                        'clg_name': clg_name.text,
+                        'branch_name': clg_branch.text,
+                        'clg_start_date': clg_start_date.text,
+                        'clg_end_date': clg_end_date.text
+                      };
+
+                      dbRef.push().set(education);
                       Navigator.pop(context);
                     },
                   ),
