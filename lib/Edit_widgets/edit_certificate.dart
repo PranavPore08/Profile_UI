@@ -1,8 +1,11 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../widget/button.dart';
 
 class EditCertificate extends StatefulWidget {
-  const EditCertificate({Key key}) : super(key: key);
+  const EditCertificate({Key key, this.studentKey}) : super(key: key);
+  final String studentKey;
+
   _EditCertificate createState() => _EditCertificate();
 }
 
@@ -10,11 +13,21 @@ class _EditCertificate extends State<EditCertificate> {
   final cer_name = TextEditingController();
   final cer_organization = TextEditingController();
   final cer_date = TextEditingController();
-  //late DatabaseReference dbref;
+
+  DatabaseReference dbref;
 
   void initState() {
     super.initState();
-    //dbref=FirebaseDatabase.instance.ref().child('Certificates');
+    dbref == FirebaseDatabase.instance.ref().child('Students/Certification');
+    getStudentCertificateData();
+  }
+
+  void getStudentCertificateData() async {
+    DataSnapshot snapshot = await dbref.child(widget.studentKey).get();
+    Map student = snapshot.value as Map;
+    cer_name.text = student['cer_name'];
+    cer_organization.text = student['cer_organization'];
+    cer_date.text = student['cer_issue_date'];
   }
 
   @override
@@ -62,9 +75,17 @@ class _EditCertificate extends State<EditCertificate> {
                   ),
                   const SizedBox(height: 15),
                   Button(
-                    text: "Edit Certificate",
+                    text: "Update Certificate",
                     onPressed: () {
-                      Navigator.pop(context);
+                      Map<String, String> students = {
+                        'cer_name': cer_name.text,
+                        'cer_organization': cer_organization.text,
+                        'cer_issue_date': cer_date.text
+                      };
+                      dbref
+                          .child(widget.studentKey)
+                          .update(students)
+                          .then((value) => {Navigator.pop(context)});
                     },
                   ),
                 ],

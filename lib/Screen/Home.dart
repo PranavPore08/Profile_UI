@@ -1,3 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+
 import 'package:flutter/material.dart';
 import 'package:settingapp_flutter/add_widget/add_certificate.dart';
 import 'package:settingapp_flutter/add_widget/add_education.dart';
@@ -7,36 +11,21 @@ import '../Edit_widgets/edit_certificate.dart';
 import '../Edit_widgets/edit_education.dart';
 import '../Edit_widgets/edit_experience.dart';
 
-void main() {
-  runApp(HomePage());
-}
-
-class HomePage extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MyHomePage();
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key key, this.title}) : super(key: key);
   final String title;
-
-  @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-  foregroundColor: Colors.black87,
-  minimumSize: Size(88, 36),
-  padding: EdgeInsets.symmetric(horizontal: 16.0),
-  shape: const RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(2.0)),
-  ),
-);
+class _MyHomePageState extends State<HomePage> {
+  
+  Query query = FirebaseDatabase.instance.ref().child('Students/Certification');
 
-class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,68 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.blueGrey,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x40000000),
-                      spreadRadius: -4,
-                      blurRadius: 25,
-                      offset: Offset(0, 4), // changes position of shadow
-                    ),
-                  ],
-                ),
-                margin: const EdgeInsets.only(
-                  top: 11,
-                  bottom: 11,
-                  right: 27,
-                  left: 27,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text("Company Name",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600)),
-                              Text("Position/ Role",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color.fromARGB(255, 41, 41, 49))),
-                              Text("Description",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color.fromARGB(255, 41, 41, 49))),
-                              Text("MM-Year To MM-Year",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Color(0xFF8F8F9E)))
-                            ]),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const EditExperience()));
-                          },
-                          child: const Icon(Icons.edit_outlined, size: 22)),
-                      const SizedBox(width: 25),
-                      const Icon(
-                        Icons.delete_outline,
-                        size: 24,
-                        color: Color(0xFFFF5959),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              experience_section(),
               Row(
                 children: [
                   Container(
@@ -282,64 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.blueGrey,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x40000000),
-                      spreadRadius: -4,
-                      blurRadius: 25,
-                      offset: Offset(0, 4), // changes position of shadow
-                    ),
-                  ],
-                ),
-                margin: const EdgeInsets.only(
-                  top: 11,
-                  bottom: 11,
-                  right: 27,
-                  left: 27,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text("College Name",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600)),
-                              Text("Branch",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color.fromARGB(255, 41, 41, 49))),
-                              Text("MM-Year To MM-Year",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Color(0xFF8F8F9E)))
-                            ]),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const EditEducation()));
-                          },
-                          child: const Icon(Icons.edit_outlined, size: 22)),
-                      const SizedBox(width: 25),
-                      const Icon(
-                        Icons.delete_outline,
-                        size: 24,
-                        color: Color(0xFFFF5959),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              eduction_section(),
               Row(
                 children: [
                   Container(
@@ -369,64 +240,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.blueGrey,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x40000000),
-                      spreadRadius: -4,
-                      blurRadius: 25,
-                      offset: Offset(0, 4), // changes position of shadow
-                    ),
-                  ],
+                //height: double.infinity,
+                Expanded(
+                child: FirebaseAnimatedList(
+                  query: query,
+                  itemBuilder: (context, snapshot, animation, index) {
+                  Map Student = snapshot.value as Map;
+                  Student['key'] = snapshot.key;
+                  return certificate_section(Student:Student);
+                },
                 ),
-                margin: const EdgeInsets.only(
-                  top: 11,
-                  bottom: 11,
-                  right: 27,
-                  left: 27,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text("Certficate Name",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600)),
-                              Text("Organization Name",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color.fromARGB(255, 41, 41, 49))),
-                              Text("DD-MM-Year",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Color(0xFF8F8F9E)))
-                            ]),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const EditCertificate()));
-                          },
-                          child: const Icon(Icons.edit_outlined, size: 22)),
-                      const SizedBox(width: 25),
-                      const Icon(
-                        Icons.delete_outline,
-                        size: 24,
-                        color: Color(0xFFFF5959),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -561,6 +385,190 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+    Widget experience_section() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blueGrey,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x40000000),
+            spreadRadius: -4,
+            blurRadius: 25,
+            offset: Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.only(
+        top: 11,
+        bottom: 11,
+        right: 27,
+        left: 27,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("Company Name",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text("Position/ Role",
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Color.fromARGB(255, 41, 41, 49))),
+                    Text("Description",
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Color.fromARGB(255, 41, 41, 49))),
+                    Text("MM-Year To MM-Year",
+                        style:
+                            TextStyle(fontSize: 15, color: Color(0xFF8F8F9E)))
+                  ]),
+            ),
+            GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const EditExperience()));
+                },
+                child: const Icon(Icons.edit_outlined, size: 22)),
+            const SizedBox(width: 25),
+            const Icon(
+              Icons.delete_outline,
+              size: 24,
+              color: Color(0xFFFF5959),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget eduction_section() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blueGrey,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x40000000),
+            spreadRadius: -4,
+            blurRadius: 25,
+            offset: Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.only(
+        top: 11,
+        bottom: 11,
+        right: 27,
+        left: 27,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("College Name",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text("Branch",
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Color.fromARGB(255, 41, 41, 49))),
+                    Text("MM-Year To MM-Year",
+                        style:
+                            TextStyle(fontSize: 15, color: Color(0xFF8F8F9E)))
+                  ]),
+            ),
+            GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const EditEducation()));
+                },
+                child: const Icon(Icons.edit_outlined, size: 22)),
+            const SizedBox(width: 25),
+            const Icon(
+              Icons.delete_outline,
+              size: 24,
+              color: Color(0xFFFF5959),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget certificate_section({Map Student}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blueGrey,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x40000000),
+            spreadRadius: -4,
+            blurRadius: 25,
+            offset: Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.only(
+        top: 11,
+        bottom: 11,
+        right: 27,
+        left: 27,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("Certficate Name",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text("Organization Name",
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Color.fromARGB(255, 41, 41, 49))),
+                    Text("DD-MM-Year",
+                        style:
+                            TextStyle(fontSize: 15, color: Color(0xFF8F8F9E)))
+                  ]),
+            ),
+            GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const EditCertificate()));
+                },
+                child: const Icon(Icons.edit_outlined, size: 22)),
+            const SizedBox(width: 25),
+            const Icon(
+              Icons.delete_outline,
+              size: 24,
+              color: Color(0xFFFF5959),
+            ),
+          ],
         ),
       ),
     );

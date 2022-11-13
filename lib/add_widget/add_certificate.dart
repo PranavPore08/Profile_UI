@@ -1,5 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../widget/button.dart';
 
@@ -14,13 +14,13 @@ class _AddCertificate extends State<AddCertificate> {
   final cer_date = TextEditingController();
 
   DatabaseReference dbRef;
-  CollectionReference db;
+  //CollectionReference db;
 
   @override
   void initState() {
     super.initState();
-    dbRef = FirebaseDatabase.instance.ref().child('Students/Certificaion');
-    db = FirebaseFirestore.instance.collection('Students');
+    dbRef = FirebaseDatabase.instance.ref().child('Students/Certification');
+    //db = FirebaseFirestore.instance.collection('Students');
   }
 
   @override
@@ -70,24 +70,24 @@ class _AddCertificate extends State<AddCertificate> {
                   Button(
                     text: "Add Certificate",
                     onPressed: () {
-                      return db
+                      /*return db
                           .add({
                             'cer_name': cer_name.text,
                             'cer_organization': cer_organization.text,
                             'cer_issue_date': cer_date.text
                           })
                           .then((value) => print("User Added"))
-                          .catchError(
-                              (error) => print("Failed to add user: $error"));
+                          .catchError((error) => print(
+                              "Failed to add user: $error")); */
 
-                /*        Map<String, String> education = {
-                        'cer_name': cer_name.text,
-                        'cer_organization': cer_organization.text,
-                        'cer_issue_date': cer_date.text
-                      };
+                        Map<String, String> education = {
+                          'cer_name': cer_name.text,
+                          'cer_organization': cer_organization.text,
+                          'cer_issue_date': cer_date.text
+                        };
 
                       dbRef.push().set(education);
-                      Navigator.pop(context);*/
+                      Navigator.pop(context);
                     },
                   ),
                 ],

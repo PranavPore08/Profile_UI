@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:settingapp_flutter/Screen/Home.dart';
 
+import 'Screen/fetch.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp();
@@ -35,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: HomePage(),
+      body: fetch(),
     );
   }
 }
