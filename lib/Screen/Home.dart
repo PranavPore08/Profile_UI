@@ -3,9 +3,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 import 'package:flutter/material.dart';
+import 'package:settingapp_flutter/Screen/fetch_certificate.dart';
+import 'package:settingapp_flutter/Screen/fetch_education.dart';
+import 'package:settingapp_flutter/Screen/fetch_experience.dart';
+import 'package:settingapp_flutter/Screen/fetch_skills.dart';
 import 'package:settingapp_flutter/add_widget/add_certificate.dart';
 import 'package:settingapp_flutter/add_widget/add_education.dart';
 import 'package:settingapp_flutter/add_widget/add_experience.dart';
+import 'package:settingapp_flutter/add_widget/add_skill.dart';
 
 import '../Edit_widgets/edit_certificate.dart';
 import '../Edit_widgets/edit_education.dart';
@@ -18,8 +23,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomePage> {
-  
-  Query query = FirebaseDatabase.instance.ref().child('Students/Certification');
 
   @override
   void initState() {
@@ -178,9 +181,28 @@ class _MyHomePageState extends State<HomePage> {
                         },
                         child: const Icon(Icons.add, size: 22)),
                   ),
-                ],
-              ),
-              experience_section(),
+                ],),
+                  Container(
+                    alignment: Alignment.center,
+                            margin: const EdgeInsets.fromLTRB(100, 10, 100, 10),
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(  
+                               color: Colors.blueGrey,
+                                borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const fetch_experience()));
+                            },
+                              child: Text(
+                                      'View',
+                                  style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,),),
+                      ),
+                    ),
+              
               Row(
                 children: [
                   Container(
@@ -207,10 +229,31 @@ class _MyHomePageState extends State<HomePage> {
                               builder: (_) => const AddEducation()));
                         },
                         child: const Icon(Icons.add, size: 22)),
-                  ),
-                ],
-              ),
-              eduction_section(),
+                  ),],),
+
+                  Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.fromLTRB(100, 10, 100, 10),
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(  
+                               color: Colors.blueGrey,
+                                borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const fetch_education()));
+                            },
+                              child: Text(
+                                'View',
+                                style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                ),
+                                ),
+                      ),
+                    ),
+
               Row(
                 children: [
                   Container(
@@ -237,24 +280,35 @@ class _MyHomePageState extends State<HomePage> {
                               builder: (_) => const AddCertificate()));
                         },
                         child: const Icon(Icons.add, size: 22)),
-                  ),
-                ],
-              ),
-                //height: double.infinity,
-                Expanded(
-                child: FirebaseAnimatedList(
-                  query: query,
-                  itemBuilder: (context, snapshot, animation, index) {
-                  Map Student = snapshot.value as Map;
-                  Student['key'] = snapshot.key;
-                  return certificate_section(Student:Student);
-                },
-                ),
-                ),
+                  ),]),
+
+                  Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.fromLTRB(100, 10, 100, 10),
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(  
+                               color: Colors.blueGrey,
+                                borderRadius: BorderRadius.circular(10),
+                            ), 
+                            child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const fetch_certificate()));
+                            },
+                            
+                              child: Text(
+                                'View',
+                                style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                )),
+                      ),
+                    ),
+            
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+              Row(
                     children: [
                       Container(
                         child: Column(
@@ -273,114 +327,39 @@ class _MyHomePageState extends State<HomePage> {
                             ]),
                       ),
                       Container(
-                        padding: EdgeInsets.only(top: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.add,
-                              size: 24,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                            ),
-                          ],
-                        ),
-                      ),
+                    padding: EdgeInsets.only(top: 30),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const AddSkill()));
+                        },
+                        child: const Icon(Icons.add, size: 22)),
+                  ),
                     ],
                   ),
+
                   Container(
-                    padding: EdgeInsets.only(top: 20, left: 10, right: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.grey[300],
-                          ),
-                          child: Center(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.fromLTRB(100, 10, 100, 10),
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(  
+                               color: Colors.blueGrey,
+                                borderRadius: BorderRadius.circular(10),
+                            ), 
+                            child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const fetch_skills()));
+                            },
+                            
                               child: Text(
-                            'Flutter',
-                            style: TextStyle(color: Colors.blueGrey),
-                          )),
-                        ),
-                        Container(
-                          width: 100,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.grey[300],
-                          ),
-                          child: Center(
-                              child: Text(
-                            'React JS',
-                            style: TextStyle(color: Colors.blueGrey),
-                          )),
-                        ),
-                        Container(
-                          width: 100,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.grey[300],
-                          ),
-                          child: Center(
-                              child: Text(
-                            'Node js',
-                            style: TextStyle(color: Colors.blueGrey),
-                          )),
-                        ),
-                      ],
+                                'View',
+                                style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                )),
+                      ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 20, left: 10, right: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.grey[300],
-                          ),
-                          child: Center(
-                              child: Text(
-                            'Django',
-                            style: TextStyle(color: Colors.blueGrey),
-                          )),
-                        ),
-                        Container(
-                          width: 100,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.grey[300],
-                          ),
-                          child: Center(
-                              child: Text(
-                            'Laravel',
-                            style: TextStyle(color: Colors.blueGrey),
-                          )),
-                        ),
-                        Container(
-                          width: 100,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.grey[300],
-                          ),
-                          child: Center(
-                              child: Text(
-                            'Express JS',
-                            style: TextStyle(color: Colors.blueGrey),
-                          )),
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ],
@@ -390,187 +369,5 @@ class _MyHomePageState extends State<HomePage> {
     );
   }
 
-    Widget experience_section() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.blueGrey,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x40000000),
-            spreadRadius: -4,
-            blurRadius: 25,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      margin: const EdgeInsets.only(
-        top: 11,
-        bottom: 11,
-        right: 27,
-        left: 27,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text("Company Name",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600)),
-                    Text("Position/ Role",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color.fromARGB(255, 41, 41, 49))),
-                    Text("Description",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color.fromARGB(255, 41, 41, 49))),
-                    Text("MM-Year To MM-Year",
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xFF8F8F9E)))
-                  ]),
-            ),
-            GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const EditExperience()));
-                },
-                child: const Icon(Icons.edit_outlined, size: 22)),
-            const SizedBox(width: 25),
-            const Icon(
-              Icons.delete_outline,
-              size: 24,
-              color: Color(0xFFFF5959),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget eduction_section() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.blueGrey,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x40000000),
-            spreadRadius: -4,
-            blurRadius: 25,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      margin: const EdgeInsets.only(
-        top: 11,
-        bottom: 11,
-        right: 27,
-        left: 27,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text("College Name",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600)),
-                    Text("Branch",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color.fromARGB(255, 41, 41, 49))),
-                    Text("MM-Year To MM-Year",
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xFF8F8F9E)))
-                  ]),
-            ),
-            GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const EditEducation()));
-                },
-                child: const Icon(Icons.edit_outlined, size: 22)),
-            const SizedBox(width: 25),
-            const Icon(
-              Icons.delete_outline,
-              size: 24,
-              color: Color(0xFFFF5959),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget certificate_section({Map Student}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.blueGrey,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x40000000),
-            spreadRadius: -4,
-            blurRadius: 25,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      margin: const EdgeInsets.only(
-        top: 11,
-        bottom: 11,
-        right: 27,
-        left: 27,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text("Certficate Name",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600)),
-                    Text("Organization Name",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color.fromARGB(255, 41, 41, 49))),
-                    Text("DD-MM-Year",
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xFF8F8F9E)))
-                  ]),
-            ),
-            GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const EditCertificate()));
-                },
-                child: const Icon(Icons.edit_outlined, size: 22)),
-            const SizedBox(width: 25),
-            const Icon(
-              Icons.delete_outline,
-              size: 24,
-              color: Color(0xFFFF5959),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+ 
 }

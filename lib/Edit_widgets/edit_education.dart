@@ -1,8 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../widget/button.dart';
 
 class EditEducation extends StatefulWidget {
-  const EditEducation({Key key}) : super(key: key);
+  const EditEducation({Key key, this.studentKey}) : super(key: key);
+  final String studentKey;
   _EditEducation createState() => _EditEducation();
 }
 
@@ -11,6 +13,23 @@ class _EditEducation extends State<EditEducation> {
   final clg_branch = TextEditingController();
   final clg_start_date = TextEditingController();
   final clg_end_date = TextEditingController();
+
+  DatabaseReference dbref;
+
+  void getStudentCertificateData() async {
+    DataSnapshot snapshot = await dbref.child(widget.studentKey).get();
+    Map student = snapshot.value as Map;
+    clg_name.text = student['clg_name'];
+    clg_branch.text = student['branch_name'];
+    clg_start_date.text = student['clg_start_date'];
+    clg_end_date.text = student['clg_end_date'];
+  }
+  @override
+  void initState() {
+    super.initState();
+    dbref = FirebaseDatabase.instance.ref().child('Students/Education');
+    getStudentCertificateData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +53,7 @@ class _EditEducation extends State<EditEducation> {
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       labelText: "College Name",
-                      hintText: 'Name',
+                      hintText: 'Enter College Name',
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -51,8 +70,8 @@ class _EditEducation extends State<EditEducation> {
                     controller: clg_start_date,
                     keyboardType: TextInputType.datetime,
                     decoration: const InputDecoration(
-                      labelText: "Start Date",
-                      hintText: 'Start Date',
+                      labelText: "College Start Date",
+                      hintText: 'Enter College Start Date',
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -60,15 +79,25 @@ class _EditEducation extends State<EditEducation> {
                     controller: clg_end_date,
                     keyboardType: TextInputType.datetime,
                     decoration: const InputDecoration(
-                      labelText: "End Date",
-                      hintText: 'End Date',
+                      labelText: "College End Date",
+                      hintText: 'Enter College End Date',
                     ),
                   ),
                   const SizedBox(height: 15),
                   Button(
-                    text: "Edit Education",
+                    text: "Update Education",
                     onPressed: () {
-                      Navigator.pop(context);
+                      Map<String, String> students = {
+                        'clg_name': clg_name.text,
+                        'branch_name': clg_branch.text,
+                        'clg_start_date': clg_start_date.text,
+                        'clg_end_date': clg_end_date.text
+                      };
+                      dbref.child(widget.studentKey)
+                          .update(students)
+                          .then((value) => {
+                            Navigator.pop(context)}
+                          );
                     },
                   ),
                 ],

@@ -1,8 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../widget/button.dart';
 
 class EditExperience extends StatefulWidget {
-  const EditExperience({Key key}) : super(key: key);
+  const EditExperience({Key key, this.studentKey}) : super(key: key);
+  final String studentKey;
   _EditExperience createState() => _EditExperience();
 }
 
@@ -13,12 +15,31 @@ class _EditExperience extends State<EditExperience> {
   final cmp_start_date = TextEditingController();
   final cmp_end_date = TextEditingController();
 
+  DatabaseReference dbref;
+
+  void getStudentExperiencesData() async {
+    DataSnapshot snapshot = await dbref.child(widget.studentKey).get();
+    Map student = snapshot.value as Map;
+    cmp_name.text = student['cmp_name'];
+    cmp_position.text = student['cmp_position'];
+    cmp_description.text = student['cmp_description'];
+    cmp_start_date.text = student['cmp_start_date'];
+    cmp_end_date.text = student['cmp_end_date'];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dbref = FirebaseDatabase.instance.ref().child('Students/Experiences');
+    getStudentExperiencesData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 75,
-        title: const Text("Edit Experience",
+        title: const Text("Edit Experiences",
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600)),
       ),
       body: CustomScrollView(
@@ -78,7 +99,18 @@ class _EditExperience extends State<EditExperience> {
                   Button(
                     text: "Edit Experience",
                     onPressed: () {
-                      Navigator.pop(context);
+                    Map<String, String> students = {
+                        'cmp_name': cmp_name.text,
+                        'cmp_position': cmp_position.text,
+                        'cmp_description': cmp_description.text,
+                        'cmp_start_date': cmp_start_date.text,
+                        'cmp_end_date': cmp_end_date.text
+                      };
+                      dbref.child(widget.studentKey)
+                          .update(students)
+                          .then((value) => {
+                            Navigator.pop(context)}
+                          );
                     },
                   ),
                 ],

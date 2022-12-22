@@ -5,7 +5,6 @@ import '../widget/button.dart';
 class EditCertificate extends StatefulWidget {
   const EditCertificate({Key key, this.studentKey}) : super(key: key);
   final String studentKey;
-
   _EditCertificate createState() => _EditCertificate();
 }
 
@@ -16,18 +15,18 @@ class _EditCertificate extends State<EditCertificate> {
 
   DatabaseReference dbref;
 
-  void initState() {
-    super.initState();
-    dbref == FirebaseDatabase.instance.ref().child('Students/Certification');
-    getStudentCertificateData();
-  }
-
   void getStudentCertificateData() async {
     DataSnapshot snapshot = await dbref.child(widget.studentKey).get();
     Map student = snapshot.value as Map;
     cer_name.text = student['cer_name'];
     cer_organization.text = student['cer_organization'];
     cer_date.text = student['cer_issue_date'];
+  }
+  @override
+  void initState() {
+    super.initState();
+    dbref = FirebaseDatabase.instance.ref().child('Students/Certification');
+    getStudentCertificateData();
   }
 
   @override
@@ -57,7 +56,7 @@ class _EditCertificate extends State<EditCertificate> {
                   ),
                   const SizedBox(height: 15),
                   TextField(
-                    controller: cer_name,
+                    controller: cer_organization,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       labelText: "Organization Name",
@@ -66,7 +65,7 @@ class _EditCertificate extends State<EditCertificate> {
                   ),
                   const SizedBox(height: 15),
                   TextField(
-                    controller: cer_name,
+                    controller: cer_date,
                     keyboardType: TextInputType.datetime,
                     decoration: const InputDecoration(
                       labelText: "Certificate Date",
@@ -82,10 +81,11 @@ class _EditCertificate extends State<EditCertificate> {
                         'cer_organization': cer_organization.text,
                         'cer_issue_date': cer_date.text
                       };
-                      dbref
-                          .child(widget.studentKey)
+                      dbref.child(widget.studentKey)
                           .update(students)
-                          .then((value) => {Navigator.pop(context)});
+                          .then((value) => {
+                            Navigator.pop(context)}
+                          );
                     },
                   ),
                 ],
